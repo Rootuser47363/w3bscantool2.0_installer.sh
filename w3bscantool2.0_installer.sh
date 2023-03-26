@@ -27,7 +27,7 @@ elif [ -f /etc/redhat-release ]; then
 elif [ -f /etc/arch-release ]; then
   # Arch Linux
   echo "Detectado Arch Linux"
-  sudo pacman -Sy
+  sudo pacman -Syu
 else
   echo "Sistema operativo no soportado"
   exit 1
