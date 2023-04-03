@@ -15,19 +15,22 @@ show_banner() {
 # Mostrar banner
 show_banner
 
-# Detectar sistema operativo
+# Detectar sistema operativo y actualizar paquetes
 if [ -f /etc/debian_version ]; then
   # Debian, Ubuntu
   echo "Detectado Debian/Ubuntu"
-  sudo apt-get update
+  echo "Actualizando paquetes..."
+  sudo apt update && sudo apt upgrade -y
 elif [ -f /etc/redhat-release ]; then
   # Red Hat, CentOS, Fedora
   echo "Detectado Red Hat/CentOS/Fedora"
-  sudo dnf update
+  echo "Actualizando paquetes..."
+  sudo dnf update -y && sudo dnf upgrade -y
 elif [ -f /etc/arch-release ]; then
   # Arch Linux
   echo "Detectado Arch Linux"
-  sudo pacman -Syu
+  echo "Actualizando paquetes..."
+  sudo pacman -Syu --noconfirm
 else
   echo "Sistema operativo no soportado"
   exit 1
@@ -40,5 +43,17 @@ curl -O https://raw.githubusercontent.com/Rootuser47363/w3bscantool2.0.sh/main/w
 # Dar permisos de ejecución
 chmod +x w3bscantool2.0.sh
 
+echo ""
 echo "La instalación de w3bscantool2.0.sh se ha completado exitosamente."
 echo "Para ejecutar la herramienta, use el comando: ./w3bscantool2.0.sh"
+echo ""
+echo "Ejemplo de uso: ./w3bscantool2.0.sh -u <url> [-h] [-l] [-r] [-s] [-q] [-x]"
+echo ""
+echo "Opciones:"
+echo "-h Mostrar este mensaje de ayuda"
+echo "-u Especificar la URL del sitio web a escanear"
+echo "-l Escanear vulnerabilidades LFI"
+echo "-r Escanear vulnerabilidades RFI"
+echo "-s Escanear vulnerabilidades de SQL injection"
+echo "-q Escanear vulnerabilidades de CMS específicas"
+echo "-x Escanear vulnerabilidades de XSS"
