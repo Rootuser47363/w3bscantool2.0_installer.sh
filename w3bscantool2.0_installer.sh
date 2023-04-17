@@ -2,14 +2,16 @@
 
 # Función para mostrar el banner
 show_banner() {
-  echo "--------------------------------------------------"
-  echo "|      Bienvenido a la autoinstalación de         |"
-  echo "|             w3bscantool2.0.sh                   |"
-  echo "|   Herramienta de Escaneo de Seguridad Web        |"
-  echo "|                                                 |"
-  echo "|                por Root/user/47363              |"
-  echo "--------------------------------------------------"
-  echo ""
+  cat << "EOF"
+--------------------------------------------------
+|      Bienvenido a la autoinstalación de         |
+|             w3bscantool2.0.sh                   |
+|   Herramienta de Escaneo de Seguridad Web        |
+|                                                 |
+|                por Root/user/47363              |
+--------------------------------------------------
+
+EOF
 }
 
 # Mostrar banner
@@ -20,7 +22,7 @@ if [ -f /etc/debian_version ]; then
   # Debian, Ubuntu
   echo "Detectado Debian/Ubuntu"
   echo "Actualizando paquetes..."
-  sudo apt update && sudo apt upgrade -y
+  sudo apt-get update && sudo apt-get upgrade -y
 elif [ -f /etc/redhat-release ]; then
   # Red Hat, CentOS, Fedora
   echo "Detectado Red Hat/CentOS/Fedora"
@@ -31,6 +33,28 @@ elif [ -f /etc/arch-release ]; then
   echo "Detectado Arch Linux"
   echo "Actualizando paquetes..."
   sudo pacman -Syu --noconfirm
+elif [ -f /etc/os-release ] && grep -qi "kali" /etc/os-release; then
+  # Kali Linux
+  echo "Detectado Kali Linux"
+  echo "Actualizando paquetes..."
+  sudo apt-get update && sudo apt-get upgrade -y
+elif [ -f /etc/os-release ] && grep -qi "parrot" /etc/os-release; then
+  # Parrot OS
+  echo "Detectado Parrot OS"
+  echo "Actualizando paquetes..."
+  sudo apt-get update && sudo apt-get upgrade -y
+elif [ -f /etc/os-release ] && grep -qi "suse" /etc/os-release; then
+  # SUSE Linux
+  echo "Detectado SUSE Linux"
+  echo "Actualizando paquetes..."
+  sudo zypper update -y
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS
+  echo "Detectado macOS"
+  echo "Instalando Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo "Actualizando paquetes..."
+  brew update && brew upgrade
 else
   echo "Sistema operativo no soportado"
   exit 1
@@ -43,17 +67,6 @@ curl -O https://raw.githubusercontent.com/Rootuser47363/w3bscantool2.0.sh/main/w
 # Dar permisos de ejecución
 chmod +x w3bscantool2.0.sh
 
-echo ""
-echo "La instalación de w3bscantool2.0.sh se ha completado exitosamente."
-echo "Para ejecutar la herramienta, use el comando: ./w3bscantool2.0.sh"
-echo ""
-echo "Ejemplo de uso: ./w3bscantool2.0.sh -u <url> [-h] [-l] [-r] [-s] [-q] [-x]"
-echo ""
-echo "Opciones:"
-echo "-h Mostrar este mensaje de ayuda"
-echo "-u Especificar la URL del sitio web a escanear"
-echo "-l Escanear vulnerabilidades LFI"
-echo "-r Escanear vulnerabilidades RFI"
-echo "-s Escanear vulnerabilidades de SQL injection"
-echo "-q Escanear vulnerabilidades de CMS específicas"
-echo "-x Escanear vulnerabilidades de XSS"
+# Ejecutar herramienta
+echo "Ejecutando herramienta..."
+./w3bscantool2.0.sh
